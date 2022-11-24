@@ -1,11 +1,11 @@
-package es.upm.dit.apsv.ordermanager.model;
+package es.upm.dit.apsv.traceconsumer1.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class TransportationOrder {
-    
+
     private String toid;
     @Id
     private String truck;
@@ -21,12 +21,12 @@ public class TransportationOrder {
     private long lastDate;
     private double lastLat;
     private double lastLong;
-    
+
     private int st;
 
     public TransportationOrder() {
     }
-    
+
     public TransportationOrder(String toid, String truck, long originDate, double originLat, double originLong,
             long dstDate, double dstLat, double dstLong, long lastDate, double lastLat, double lastLong,
             int st) {
@@ -139,7 +139,7 @@ public class TransportationOrder {
     public void setSt(int st) {
         this.st = st;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -164,7 +164,7 @@ public class TransportationOrder {
             return false;
         return true;
     }
-    
+
     @Override
     public String toString() {
         return "TransportationOrder [lastDate=" + lastDate + ", lastLat=" + lastLat + ", lastLong="
@@ -177,5 +177,5 @@ public class TransportationOrder {
         return Math.sqrt(Math.pow(this.dstLat -this.lastLat, 2)
                     + Math.pow(this.dstLong - this.lastLong, 2));
     }
-    
+
 }
