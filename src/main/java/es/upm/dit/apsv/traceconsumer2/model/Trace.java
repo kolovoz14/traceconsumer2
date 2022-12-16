@@ -1,4 +1,4 @@
-package es.upm.dit.apsv.traceconsumer1.model;
+package es.upm.dit.apsv.traceconsumer2.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

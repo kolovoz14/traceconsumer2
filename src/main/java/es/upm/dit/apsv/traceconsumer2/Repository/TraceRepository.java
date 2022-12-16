@@ -1,7 +1,7 @@
-package es.upm.dit.apsv.traceconsumer1.Repository;
+package es.upm.dit.apsv.traceconsumer2.Repository;
 
 import org.springframework.data.repository.CrudRepository;
-import es.upm.dit.apsv.traceconsumer1.model.Trace;
+import es.upm.dit.apsv.traceconsumer2.model.Trace;
 
 public interface TraceRepository extends CrudRepository<Trace, String> {
 }
