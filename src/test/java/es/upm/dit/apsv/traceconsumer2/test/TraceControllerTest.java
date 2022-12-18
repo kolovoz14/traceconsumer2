@@ -1,5 +1,6 @@
 package es.upm.dit.apsv.traceconsumer2.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
@@ -27,6 +28,7 @@ class TraceConsumerApplicationTests {
     private InputDestination input;
     @Autowired
     private TransportationOrderRepository repository;
+
     @BeforeEach
     void setUpOrders() {
         TransportationOrder o = new TransportationOrder();
@@ -41,23 +43,24 @@ class TraceConsumerApplicationTests {
         o.setSt(0);
         repository.save(o);
     }
+
     @AfterEach
     void cleanUpOrders() {
         repository.deleteAll();
     }
+
     @Test
     void testOrderUpdate() {
         // 1. send the message to be processed asynchronously
         Trace t = new Trace("truck-1569233700000", "test-truck",
-                  1569233700000L, 38.42089633723801,    -1.4491918734674392);
+                1569233700000L, 38.42089633723801, -1.4491918734674392);
         Message<Trace> m = new GenericMessage<Trace>(t);
         input.send(m);
         try {
-       // asynchronous processing
+            // asynchronous processing
             Thread.sleep(1000);
-        // 2. Check that the asynchronous function correctly updated the order
-            TransportationOrder result = repository.findById("test-truck").
-                                                               orElseThrow();
+            // 2. Check that the asynchronous function correctly updated the order
+            TransportationOrder result = repository.findById("test-truck").orElseThrow();
             assertEquals(result.getSt(), 0);
             assertEquals(result.getLastDate(), 1569233700000L);
             assertEquals(result.getLastLat(), 38.42089633723801);
@@ -68,13 +71,51 @@ class TraceConsumerApplicationTests {
             e.printStackTrace();
         }
     }
+
     @Test
     void testOrderArrives() {
         // 1. send the message to be processed asynchronously
-      // 2. Check that the asynchronous function correctly updated the order
-           }
+        Trace t = new Trace("truck-1569233700000", "test-truck",
+                1569233700000L, 44.0001324, 88.0000421);
+        Message<Trace> m = new GenericMessage<Trace>(t);
+        input.send(m);
+        try {
+            // asynchronous processing
+            Thread.sleep(1000);
+            // 2. Check that the asynchronous function correctly updated the order
+            TransportationOrder result = repository.findById("test-truck").orElseThrow();
+            assertEquals(result.getSt(), 1);
+            double admissibleDistanceDifference = 0.01; // 0.01=delta admissible distance between Destanation and Trace
+            assertEquals(result.distanceToDestination(), 0, admissibleDistanceDifference);
+
+        } catch (NoSuchElementException e) {
+            fail(); // the order should exist
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     void testbadTrace() {
-
+        //1. send the message to be processed asynchronously
+        Trace t = new Trace("truck-1569233700000", "bad-test-truck",
+                1569233700000L, 38.42089633723801, -1.4491918734674392);
+        Message<Trace> m = new GenericMessage<Trace>(t);
+        input.send(m);
+        try {
+            //asynchronous processing
+            Thread.sleep(1000);
+            // 2. Check if NoSuchElementException is thrown- order with non-existing truckId not found
+            TransportationOrder result = repository.findById("test-truck").orElseThrow();
+            assertEquals(result.getSt(), 0);
+            assertNotEquals(result.getTruck(), "bad-test-truck");
+            assertNotEquals(result.getLastDate(), 1569233700000L);
+            assertNotEquals(result.getLastLat(), 38.42089633723801);
+            assertNotEquals(result.getLastLong(), -1.4491918734674392);
+        } catch (NoSuchElementException e) {
+            fail(); // the order should exist
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
