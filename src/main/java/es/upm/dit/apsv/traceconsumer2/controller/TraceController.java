@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.upm.dit.apsv.traceconsumer2.Repository.TraceRepository;
 import es.upm.dit.apsv.traceconsumer2.model.Trace;
+import es.upm.dit.apsv.traceconsumer2.repository.TraceRepository;
 
 @RestController
 public class TraceController {

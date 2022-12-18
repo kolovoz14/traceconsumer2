@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
 
-import es.upm.dit.apsv.traceconsumer2.Repository.TraceRepository;
 import es.upm.dit.apsv.traceconsumer2.model.Trace;
 
 import org.springframework.context.annotation.Bean;
@@ -20,16 +19,17 @@ import org.springframework.web.client.RestTemplate;
 import java.util.function.Consumer;
 
 import es.upm.dit.apsv.traceconsumer2.model.TransportationOrder;
-import es.upm.dit.apsv.traceconsumer2.Repository.TransportationOrderRepository;
+import es.upm.dit.apsv.traceconsumer2.repository.TraceRepository;
+import es.upm.dit.apsv.traceconsumer2.repository.TransportationOrderRepository;
 
 
 @SpringBootApplication
-public class TraceConsumer2Application {
+public class Traceconsumer2Application {
 
-	public static final Logger log = LoggerFactory.getLogger(TraceConsumer2Application.class);
+	public static final Logger log = LoggerFactory.getLogger(Traceconsumer2Application.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(TraceConsumer2Application.class, args);
+		SpringApplication.run(Traceconsumer2Application.class, args);
 	}
 
 	@Component
