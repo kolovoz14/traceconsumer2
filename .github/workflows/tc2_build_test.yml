@@ -31,14 +31,14 @@ jobs:
     - name: Run all defined tests and generate war with Maven
       run: mvn -B verify --file pom.xml
     - name: Login to GHCR.IO
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: "kolovoz14"
-          password: ${{ secrets.PAT }}
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: "kolovoz14"
+        password: ${{ secrets.PAT }}
     - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/kolovoz14/tc2:latest
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: ghcr.io/kolovoz14/tc2:latest
