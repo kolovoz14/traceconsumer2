@@ -30,6 +30,11 @@ jobs:
         java-version: 14
     - name: Run all defined tests and generate war with Maven
       run: mvn -B verify --file pom.xml
+
+  upload:
+    needs: verify-and-package
+    runs-on: ubuntu-latest
+    steps:
     - name: Login to GHCR.IO
       uses: docker/login-action@v2
       with:
